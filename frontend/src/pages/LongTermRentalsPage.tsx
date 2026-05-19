@@ -389,8 +389,8 @@ export default function LongTermRentalsPage() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {properties.map((property, index) => (
-                    <LongTermCard key={property.id} property={property} index={index} />
+                  {properties.map((property) => (
+                    <LongTermCard key={property.id} property={property} />
                   ))}
                 </div>
                 <div className="mt-10 flex justify-center">
