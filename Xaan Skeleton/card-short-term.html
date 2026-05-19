@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>XA'AN | Short-Term Card Reference</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'xa-purple': '#221854',
+            'xa-violet': '#5b25c1',
+            'xa-dark':   '#141821',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #F5F3EF; font-family: 'Inter', sans-serif; }
+
+    /* Image scroll on hover */
+    .card-img-wrap { position: relative; overflow: hidden; height: 208px; }
+    .card-img-track { display: flex; flex-direction: column; transition: transform 0.6s ease; }
+    .card-img-track img { width: 100%; height: 208px; object-fit: cover; flex-shrink: 0; }
+    .card-root:hover .card-img-track { transition: transform 8s linear; transform: translateY(-50%); }
+  </style>
+</head>
+<body class="antialiased py-16 px-8 lg:px-16">
+
+  <!-- Page header -->
+  <div class="max-w-7xl mx-auto mb-10">
+    <p class="text-lg font-normal uppercase tracking-[0.22em] text-[#221854] leading-8">Component Reference</p>
+    <h1 class="text-4xl sm:text-5xl font-semibold tracking-[-0.06em] text-[#141821]">Short-Term Rental Cards</h1>
+    <p class="text-base text-[#242424] leading-7 mt-2">Source: glm / cards1 — white bg, h-52 image, bed/bath icons, /n pricing, image scroll on hover at half speed.</p>
+  </div>
+
+  <!-- Card grid -->
+  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+    <!-- Card 1 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa Azure Bliss</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">Mazatlán, Sinaloa</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 4
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 3
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$2,100</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Casa del Mar</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">Puerto Vallarta, Jalisco</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 3
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$1,450</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Condo Playa Norte</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">Cancún, Quintana Roo</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$1,925</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Hacienda Tulum</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">Tulum, Quintana Roo</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 5
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 4
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$3,200</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Penthouse Roma Norte</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">Ciudad de México, CDMX</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$1,100</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="card-root bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300">
+      <div class="card-img-wrap">
+        <div class="card-img-track">
+          <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=400&fit=crop" alt=""/>
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop" alt=""/>
+        </div>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+        <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-start mb-1">
+          <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa San Miguel</h3>
+          <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+        </div>
+        <p class="text-sm text-[#756791] mb-2">San Miguel de Allende, GTO</p>
+        <div class="flex items-center gap-2 text-sm text-[#756791]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 3
+          <span class="text-[#ccc2ed]">·</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2
+          <span class="text-[#ccc2ed]">·</span>
+          <span class="font-semibold text-[#141821]">$1,750</span><span class="text-xs">/n</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<div id="root">Loading...</div>
+<script type="module">
+  try {
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js');
+    const { getAuth, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js');
+    
+    const app = initializeApp({
+      apiKey: 'demo-api-key',
+      authDomain: 'demo-project.firebaseapp.com',
+      projectId: 'demo-project',
+    });
+    const auth = getAuth(app);
+    
+    onAuthStateChanged(auth, (user) => {
+      document.getElementById('root').textContent = 'Auth state: ' + (user ? 'logged in' : 'logged out');
+    });
+  } catch (e) {
+    document.getElementById('root').textContent = 'Error: ' + e.message;
+  }
+</script>
+</body>
+</html>

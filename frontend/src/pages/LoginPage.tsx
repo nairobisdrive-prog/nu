@@ -58,12 +58,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-[#F5F3EF] flex items-center justify-center py-12 px-4 pt-16">
       <div className="w-full max-w-md">
         {/* Back Link */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-[#756791] hover:text-[#141821] transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to home
@@ -76,13 +76,13 @@ export default function LoginPage() {
         >
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#271868] to-[#40208e] flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#5B25C1] to-[#221854] flex items-center justify-center mx-auto mb-4">
               <span className="text-white font-bold text-2xl">X</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-[#141821]">
               {isSignUp ? 'Create Account' : 'Welcome Back'}
             </h1>
-            <p className="text-gray-500 mt-2">
+            <p className="text-[#756791] mt-2">
               {isSignUp ? 'Sign up to start renting' : 'Sign in to your account'}
             </p>
           </div>
@@ -98,20 +98,20 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+                <label className="block text-sm font-medium text-[#141821] mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="John Doe"
                   required={isSignUp}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#5b25c1] focus:outline-none focus:ring-2 focus:ring-[#5b25c1]/20"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#5B25C1] focus:outline-none focus:ring-2 focus:ring-[#5B25C1]/20"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-[#141821] mb-1.5">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
@@ -120,13 +120,13 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#5b25c1] focus:outline-none focus:ring-2 focus:ring-[#5b25c1]/20"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#5B25C1] focus:outline-none focus:ring-2 focus:ring-[#5B25C1]/20"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-[#141821] mb-1.5">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
@@ -136,12 +136,12 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
-                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-200 focus:border-[#5b25c1] focus:outline-none focus:ring-2 focus:ring-[#5b25c1]/20"
+                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-200 focus:border-[#5B25C1] focus:outline-none focus:ring-2 focus:ring-[#5B25C1]/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#756791]"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -151,7 +151,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#271868] to-[#40208e] text-white font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#5B25C1] to-[#221854] text-white font-semibold hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
@@ -163,7 +163,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">or continue with</span>
+              <span className="px-4 bg-white text-[#756791]">or continue with</span>
             </div>
           </div>
 
@@ -192,11 +192,11 @@ export default function LoginPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span className="text-gray-700 font-medium">Google</span>
+            <span className="text-[#141821] font-medium">Google</span>
           </button>
 
           {/* Toggle */}
-          <p className="text-center mt-6 text-sm text-gray-500">
+          <p className="text-center mt-6 text-sm text-[#756791]">
             {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
             <button
               type="button"
@@ -205,7 +205,7 @@ export default function LoginPage() {
                 setLocalError('');
                 clearError();
               }}
-              className="text-[#5b25c1] font-medium hover:underline"
+              className="text-[#5B25C1] font-medium hover:underline"
             >
               {isSignUp ? 'Sign in' : 'Sign up'}
             </button>

@@ -107,8 +107,8 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-16 flex items-center relative">
         {/* Left: Logo */}
         <div className="flex items-center pl-8 z-10">
-          <Link to="/" className="text-xl font-black tracking-tighter text-[#221854]">
-            XA'AN
+          <Link to="/">
+            <img src="/xaan-logo.png" alt="XA'AN" className="h-10 w-auto object-contain" />
           </Link>
         </div>
 
@@ -343,8 +343,8 @@ export default function Header() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-10 flex items-center justify-between">
-                <Link to="/" className="text-xl font-black tracking-tighter text-[#221854]" onClick={() => setMobileOpen(false)}>
-                  XA'AN
+                <Link to="/" onClick={() => setMobileOpen(false)}>
+                  <img src="/xaan-logo.png" alt="XA'AN" className="h-10 w-auto object-contain" />
                 </Link>
                 <button onClick={() => setMobileOpen(false)} className="rounded-full bg-[#f2e7f6] p-3">
                   <X size={20} />

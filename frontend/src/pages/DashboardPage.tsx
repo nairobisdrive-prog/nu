@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -9,6 +10,53 @@ import {
   Users,
 } from 'lucide-react';
 import { agentsApi } from '../lib/api';
+
+/* ─── Dark Header Icons ─── */
+function IconMapPin({ className }: { className?: string }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ccc2ed" strokeWidth="2" className={className}>
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function IconCalendar({ className }: { className?: string }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ccc2ed" strokeWidth="2" className={className}>
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
+function IconUsers({ className }: { className?: string }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ccc2ed" strokeWidth="2" className={className}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function IconSearch({ className }: { className?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  );
+}
+
+function IconChevronDown({ className }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={className}>
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
 
 interface Agent {
   id: string | number;
@@ -78,8 +126,56 @@ export default function DashboardPage() {
   };
 
   return (
+    <div className="min-h-screen bg-[#141821]">
+      {/* Dark Header Nav */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center h-20 border-b border-white/10 bg-[#141821]">
+        {/* Left: Logo */}
+        <div className="flex items-center pl-8 lg:pl-32 z-10">
+          <Link to="/">
+            <img src="/xaan-logo.png" alt="XA'AN" className="h-10 w-auto object-contain" />
+          </Link>
+        </div>
+
+        {/* Center: Search Bar */}
+        <div className="absolute left-1/2 -translate-x-1/2 w-[580px]">
+          <div className="flex items-center bg-white/10 border border-white/20 rounded-full shadow-sm h-11 overflow-hidden">
+            <div className="flex items-center gap-0.5 pl-3 pr-3 border-r border-white/20 flex-shrink-0">
+              <button className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full bg-[#5B25C1] text-white">Short Term</button>
+              <button className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full text-white/60 hover:bg-white/10 transition-colors">Long Term</button>
+            </div>
+            <div className="flex items-center gap-2 px-4 flex-1 min-w-0">
+              <IconMapPin className="flex-shrink-0" />
+              <input type="text" placeholder="Where to?" className="bg-transparent text-sm text-white placeholder-white/40 outline-none border-0 ring-0 focus:ring-0 focus:outline-none w-full font-medium min-w-0" />
+            </div>
+            <div className="flex items-center gap-2 px-3 flex-shrink-0">
+              <IconCalendar className="flex-shrink-0" />
+              <span className="text-sm text-white/40 whitespace-nowrap">Any week</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 flex-shrink-0">
+              <IconUsers className="flex-shrink-0" />
+              <span className="text-sm text-white/40">Guests</span>
+            </div>
+            <button className="h-11 w-11 flex-shrink-0 bg-[#5B25C1] flex items-center justify-center hover:bg-[#221854] transition-colors">
+              <IconSearch />
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Nav */}
+        <nav className="flex-1 flex items-center justify-end">
+          <ul className="hidden md:flex gap-10 text-xs font-bold tracking-widest uppercase mr-8 text-white/70">
+            <li><a className="hover:text-white transition-colors" href="#">Become a host</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">FAQ</a></li>
+          </ul>
+          <button className="bg-[#5B25C1] text-white px-8 h-20 flex items-center gap-3 hover:bg-[#221854] transition-all duration-300 cta-polygon">
+            <span className="text-xs font-bold tracking-widest uppercase">Login</span>
+            <IconChevronDown />
+          </button>
+        </nav>
+      </header>
+
     <section
-      className="bg-[#141821] px-5 py-24 text-white lg:px-10"
+      className="px-5 py-24 text-white lg:px-10"
       style={{ paddingTop: 128 }}
     >
       <div className="mx-auto grid max-w-[1320px] gap-8 lg:grid-cols-[0.9fr_1.1fr]">
@@ -285,5 +381,6 @@ export default function DashboardPage() {
         </motion.div>
       </div>
     </section>
+    </div>
   );
 }

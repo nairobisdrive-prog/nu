@@ -244,7 +244,7 @@ export default function HomePage() {
 
           <div className="mt-10 text-center">
             <Link
-              to="/listings"
+              to="/rentals/short-term"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full border-2 border-[#5b25c1] text-[#5b25c1] font-semibold hover:bg-[#5b25c1] hover:text-white transition-all duration-300"
             >
               View all properties

@@ -47,13 +47,13 @@ export default function AgentProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-[#F5F3EF] pt-16">
       {/* Header */}
-      <div className="sticky top-20 z-30 bg-white/95 backdrop-blur-xl border-b border-plum-300/30">
-        <div className="mx-[150px] max-xl:mx-8 max-lg:mx-6 py-4">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-xl border-b border-[#CCC2ED]/30">
+        <div className="max-w-7xl mx-auto px-8 lg:px-16 py-4">
           <Link
             to="/find-agent"
-            className="flex items-center gap-2 text-plum-600 hover:text-plum-700 font-medium"
+            className="flex items-center gap-2 text-[#5B25C1] hover:text-[#221854] font-medium"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Agents
@@ -62,8 +62,8 @@ export default function AgentProfilePage() {
       </div>
 
       {/* Hero */}
-      <section className="mx-[150px] max-xl:mx-8 max-lg:mx-6 py-12">
-        <div className="bg-gradient-to-r from-plum-700 to-plum-900 rounded-3xl overflow-hidden">
+      <section className="max-w-7xl mx-auto px-8 lg:px-16 py-12">
+        <div className="bg-gradient-to-r from-[#221854] to-[#5B25C1] rounded-3xl overflow-hidden">
           <div className="p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
             <img
               src={agent.photo}
@@ -71,12 +71,12 @@ export default function AgentProfilePage() {
               className="w-40 h-40 rounded-2xl object-cover border-4 border-white/20 shadow-2xl"
             />
             <div className="text-center md:text-left flex-1">
-              <h1 className="font-heading font-bold text-3xl text-white mb-2">{agent.name}</h1>
-              <p className="text-plum-300 mb-4">{agent.agency}</p>
+              <h1 className="font-bold text-3xl text-white mb-2">{agent.name}</h1>
+              <p className="text-[#CCC2ED] mb-4">{agent.agency}</p>
               <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                 <span className="text-white font-semibold">{agent.rating}</span>
-                <span className="text-plum-300">({agent.reviewCount} reviews)</span>
+                <span className="text-[#CCC2ED]">({agent.reviewCount} reviews)</span>
               </div>
               <div className="flex flex-wrap justify-center md:justify-start gap-2">
                 {agent.specialties.map((specialty, i) => (
@@ -90,7 +90,7 @@ export default function AgentProfilePage() {
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <button className="px-6 py-3 rounded-xl bg-white text-plum-700 font-semibold hover:shadow-xl transition-all flex items-center gap-2">
+              <button className="px-6 py-3 rounded-xl bg-white text-[#5B25C1] font-semibold hover:shadow-xl transition-all flex items-center gap-2">
                 <Phone className="w-5 h-5" />
                 Call Agent
               </button>
@@ -104,7 +104,7 @@ export default function AgentProfilePage() {
       </section>
 
       {/* Stats */}
-      <section className="mx-[150px] max-xl:mx-8 max-lg:mx-6 py-8">
+      <section className="max-w-7xl mx-auto px-8 lg:px-16 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <motion.div
@@ -112,19 +112,19 @@ export default function AgentProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-lg shadow-charcoal/5 border border-plum-300/30 text-center"
+              className="bg-white rounded-2xl p-6 shadow-md text-center"
             >
-              <stat.icon className="w-8 h-8 text-plum-600 mx-auto mb-3" />
-              <span className="block text-3xl font-heading font-bold text-charcoal">{stat.value}</span>
-              <span className="text-sm text-plum-600">{stat.label}</span>
+              <stat.icon className="w-8 h-8 text-[#5B25C1] mx-auto mb-3" />
+              <span className="block text-3xl font-bold text-[#141821]">{stat.value}</span>
+              <span className="text-sm text-[#756791]">{stat.label}</span>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Tabs */}
-      <section className="mx-[150px] max-xl:mx-8 max-lg:mx-6 py-8">
-        <div className="flex items-center gap-4 border-b border-plum-300/50 mb-8">
+      <section className="max-w-7xl mx-auto px-8 lg:px-16 py-8">
+        <div className="flex items-center gap-4 border-b border-[#F2E7F6] mb-8">
           {[
             { id: 'listings', label: 'Listings' },
             { id: 'reviews', label: 'Reviews' },
@@ -135,15 +135,15 @@ export default function AgentProfilePage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-6 py-4 font-medium transition-colors relative ${
                 activeTab === tab.id
-                  ? 'text-plum-700'
-                  : 'text-plum-600 hover:text-plum-700'
+                  ? 'text-[#5B25C1]'
+                  : 'text-[#756791] hover:text-[#5B25C1]'
               }`}
             >
               {tab.label}
               {activeTab === tab.id && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-plum-700"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5B25C1]"
                 />
               )}
             </button>
@@ -157,7 +157,7 @@ export default function AgentProfilePage() {
             ))}
             {agentListings.length === 0 && (
               <div className="col-span-full text-center py-12">
-                <p className="text-plum-600">No active listings at the moment.</p>
+                <p className="text-[#756791]">No active listings at the moment.</p>
               </div>
             )}
           </div>
@@ -171,12 +171,12 @@ export default function AgentProfilePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-6 shadow-lg shadow-charcoal/5 border border-plum-300/30"
+                className="bg-white rounded-2xl p-6 shadow-md"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h4 className="font-semibold text-charcoal">{review.author}</h4>
-                    <span className="text-sm text-plum-500">{new Date(review.date).toLocaleDateString('es-MX')}</span>
+                    <h4 className="font-semibold text-[#141821]">{review.author}</h4>
+                    <span className="text-sm text-[#756791]">{new Date(review.date).toLocaleDateString('es-MX')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
@@ -191,7 +191,7 @@ export default function AgentProfilePage() {
                     ))}
                   </div>
                 </div>
-                <p className="text-plum-600">{review.text}</p>
+                <p className="text-[#756791]">{review.text}</p>
               </motion.div>
             ))}
           </div>
@@ -202,35 +202,35 @@ export default function AgentProfilePage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl p-8 shadow-lg shadow-charcoal/5 border border-plum-300/30"
+              className="bg-white rounded-2xl p-8 shadow-md"
             >
-              <h3 className="font-heading font-semibold text-xl text-charcoal mb-4">About {agent.name}</h3>
-              <p className="text-plum-600 leading-relaxed mb-6">{agent.bio}</p>
+              <h3 className="font-semibold text-xl text-[#141821] mb-4">About {agent.name}</h3>
+              <p className="text-[#756791] leading-relaxed mb-6">{agent.bio}</p>
 
-              <h4 className="font-heading font-semibold text-lg text-charcoal mb-3">Specialties</h4>
+              <h4 className="font-semibold text-lg text-[#141821] mb-3">Specialties</h4>
               <div className="flex flex-wrap gap-2 mb-6">
                 {agent.specialties.map((specialty, i) => (
                   <span
                     key={i}
-                    className="px-4 py-2 rounded-full bg-plum-300/50 text-plum-700 font-medium"
+                    className="px-4 py-2 rounded-full bg-[#F2E7F6] text-[#5B25C1] font-medium"
                   >
                     {specialty}
                   </span>
                 ))}
               </div>
 
-              <h4 className="font-heading font-semibold text-lg text-charcoal mb-3">Contact Information</h4>
+              <h4 className="font-semibold text-lg text-[#141821] mb-3">Contact Information</h4>
               <div className="space-y-3">
                 <a
                   href={`tel:${agent.phone}`}
-                  className="flex items-center gap-3 text-plum-600 hover:text-plum-700 transition-colors"
+                  className="flex items-center gap-3 text-[#5B25C1] hover:text-[#221854] transition-colors"
                 >
                   <Phone className="w-5 h-5" />
                   {agent.phone}
                 </a>
                 <a
                   href={`mailto:${agent.email}`}
-                  className="flex items-center gap-3 text-plum-600 hover:text-plum-700 transition-colors"
+                  className="flex items-center gap-3 text-[#5B25C1] hover:text-[#221854] transition-colors"
                 >
                   <Mail className="w-5 h-5" />
                   {agent.email}

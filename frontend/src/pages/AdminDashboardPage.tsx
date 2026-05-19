@@ -76,8 +76,8 @@ export default function AdminDashboardPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
+      <div className="min-h-screen bg-[#F5F3EF] flex items-center justify-center">
+        <div className="animate-pulse text-[#756791]">Loading...</div>
       </div>
     );
   }
@@ -87,21 +87,21 @@ export default function AdminDashboardPage() {
   }
 
   const statCards = [
-    { label: 'Total Users', value: stats?.totalUsers || 0, icon: Users, color: 'bg-blue-500' },
-    { label: 'Total Agents', value: stats?.totalAgents || 0, icon: Building2, color: 'bg-purple-500' },
-    { label: 'Properties', value: stats?.totalProperties || 0, icon: Home, color: 'bg-emerald-500' },
-    { label: 'Active Listings', value: stats?.activeProperties || 0, icon: CheckCircle, color: 'bg-amber-500' },
-    { label: 'Blog Posts', value: stats?.totalBlogs || 0, icon: Newspaper, color: 'bg-rose-500' },
-    { label: 'Published', value: stats?.publishedBlogs || 0, icon: Eye, color: 'bg-cyan-500' },
+    { label: 'Total Users', value: stats?.totalUsers || 0, icon: Users, color: 'bg-[#5B25C1]' },
+    { label: 'Total Agents', value: stats?.totalAgents || 0, icon: Building2, color: 'bg-[#221854]' },
+    { label: 'Properties', value: stats?.totalProperties || 0, icon: Home, color: 'bg-[#5B25C1]' },
+    { label: 'Active Listings', value: stats?.activeProperties || 0, icon: CheckCircle, color: 'bg-[#221854]' },
+    { label: 'Blog Posts', value: stats?.totalBlogs || 0, icon: Newspaper, color: 'bg-[#5B25C1]' },
+    { label: 'Published', value: stats?.publishedBlogs || 0, icon: Eye, color: 'bg-[#221854]' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-[#F5F3EF] pt-16">
       <div className="max-w-[1400px] mx-auto px-5 lg:px-10 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-500 mt-1">Manage your rental platform</p>
+          <h1 className="text-3xl font-bold text-[#141821]">Admin Dashboard</h1>
+          <p className="text-[#756791] mt-1">Manage your rental platform</p>
         </div>
 
         {/* Tabs */}
@@ -117,8 +117,8 @@ export default function AdminDashboardPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-[#271868] text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-[#221854] text-white shadow-md'
+                  : 'bg-white text-[#756791] hover:bg-[#F5F3EF] border border-[#E8E5DF]'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -139,13 +139,13 @@ export default function AdminDashboardPage() {
               {statCards.map((stat) => (
                 <div
                   key={stat.label}
-                  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
+                  className="bg-white rounded-2xl p-5 shadow-sm border border-[#E8E5DF]"
                 >
                   <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center mb-3`}>
                     <stat.icon className="w-5 h-5 text-white" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                  <div className="text-sm text-gray-500">{stat.label}</div>
+                  <div className="text-2xl font-bold text-[#141821]">{stat.value}</div>
+                  <div className="text-sm text-[#756791]">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -154,21 +154,21 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link
                 to="/rentals/short-term"
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl p-6 shadow-sm border border-[#E8E5DF] hover:shadow-md transition-shadow"
               >
-                <Home className="w-8 h-8 text-[#5b25c1] mb-4" />
-                <h3 className="font-semibold text-gray-900">Browse Properties</h3>
-                <p className="text-sm text-gray-500 mt-1">View all rental listings</p>
+                <Home className="w-8 h-8 text-[#5B25C1] mb-4" />
+                <h3 className="font-semibold text-[#141821]">Browse Properties</h3>
+                <p className="text-sm text-[#756791] mt-1">View all rental listings</p>
               </Link>
               <Link
                 to="/blog"
-                className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl p-6 shadow-sm border border-[#E8E5DF] hover:shadow-md transition-shadow"
               >
-                <Newspaper className="w-8 h-8 text-[#5b25c1] mb-4" />
-                <h3 className="font-semibold text-gray-900">View Blog</h3>
-                <p className="text-sm text-gray-500 mt-1">See published articles</p>
+                <Newspaper className="w-8 h-8 text-[#5B25C1] mb-4" />
+                <h3 className="font-semibold text-[#141821]">View Blog</h3>
+                <p className="text-sm text-[#756791] mt-1">See published articles</p>
               </Link>
-              <div className="bg-gradient-to-br from-[#271868] to-[#40208e] rounded-2xl p-6 text-white">
+              <div className="bg-gradient-to-br from-[#221854] to-[#5B25C1] rounded-2xl p-6 text-white">
                 <Shield className="w-8 h-8 mb-4" />
                 <h3 className="font-semibold">Admin Access</h3>
                 <p className="text-sm text-white/70 mt-1">Role: {user.role}</p>
@@ -182,35 +182,35 @@ export default function AdminDashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            className="bg-white rounded-2xl shadow-sm border border-[#E8E5DF] overflow-hidden"
           >
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">All Properties</h2>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#271868] text-white text-sm font-medium hover:bg-[#40208e] transition-colors">
+            <div className="p-6 border-b border-[#E8E5DF] flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-[#141821]">All Properties</h2>
+              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#221854] text-white text-sm font-medium hover:bg-[#5B25C1] transition-colors">
                 <Plus className="w-4 h-4" />
                 Add Property
               </button>
             </div>
             {loading ? (
-              <div className="p-8 text-center text-gray-500">Loading...</div>
+              <div className="p-8 text-center text-[#756791]">Loading...</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-[#F5F3EF]">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Property</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Property</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Type</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Price</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-[#E8E5DF]">
                     {properties.map((p) => (
-                      <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={p.id} className="hover:bg-[#F5F3EF] transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-gray-200 overflow-hidden">
+                            <div className="w-10 h-10 rounded-lg bg-[#E8E5DF] overflow-hidden">
                               {p.images && (
                                 <img
                                   src={typeof p.images === 'string' ? JSON.parse(p.images)[0] : p.images[0]}
@@ -220,30 +220,30 @@ export default function AdminDashboardPage() {
                               )}
                             </div>
                             <div>
-                              <div className="font-medium text-gray-900 text-sm">{p.title}</div>
-                              <div className="text-xs text-gray-500">{p.city}</div>
+                              <div className="font-medium text-[#141821] text-sm">{p.title}</div>
+                              <div className="text-xs text-[#756791]">{p.city}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             p.price_type === 'short_term'
-                              ? 'bg-purple-100 text-purple-700'
-                              : 'bg-blue-100 text-blue-700'
+                              ? 'bg-[#F5F3EF] text-[#5B25C1]'
+                              : 'bg-[#F5F3EF] text-[#221854]'
                           }`}>
                             {p.price_type === 'short_term' ? 'Short-term' : 'Long-term'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-[#141821]">
                           ${Number(p.price).toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             p.status === 'active'
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-green-100 text-green-800'
                               : p.status === 'pending'
-                              ? 'bg-amber-100 text-amber-700'
-                              : 'bg-gray-100 text-gray-700'
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-[#F5F3EF] text-[#756791]'
                           }`}>
                             {p.status}
                           </span>
@@ -252,14 +252,14 @@ export default function AdminDashboardPage() {
                           <div className="flex items-center gap-2">
                             <Link
                               to={`/property/${p.id}`}
-                              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+                              className="p-1.5 rounded-lg hover:bg-[#F5F3EF] text-[#756791] hover:text-[#141821]"
                             >
                               <Eye className="w-4 h-4" />
                             </Link>
-                            <button className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-500 hover:text-blue-600">
+                            <button className="p-1.5 rounded-lg hover:bg-[#F5F3EF] text-[#756791] hover:text-[#5B25C1]">
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button className="p-1.5 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600">
+                            <button className="p-1.5 rounded-lg hover:bg-red-50 text-[#756791] hover:text-red-600">
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
@@ -278,59 +278,59 @@ export default function AdminDashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            className="bg-white rounded-2xl shadow-sm border border-[#E8E5DF] overflow-hidden"
           >
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Blog Posts</h2>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#271868] text-white text-sm font-medium hover:bg-[#40208e] transition-colors">
+            <div className="p-6 border-b border-[#E8E5DF] flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-[#141821]">Blog Posts</h2>
+              <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#221854] text-white text-sm font-medium hover:bg-[#5B25C1] transition-colors">
                 <Plus className="w-4 h-4" />
                 Add Post
               </button>
             </div>
             {loading ? (
-              <div className="p-8 text-center text-gray-500">Loading...</div>
+              <div className="p-8 text-center text-[#756791]">Loading...</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-[#F5F3EF]">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Post</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Post</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-[#E8E5DF]">
                     {blogs.map((post) => (
-                      <tr key={post.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={post.id} className="hover:bg-[#F5F3EF] transition-colors">
                         <td className="px-6 py-4">
-                          <div className="font-medium text-gray-900 text-sm">{post.title}</div>
-                          <div className="text-xs text-gray-500">/{post.slug}</div>
+                          <div className="font-medium text-[#141821] text-sm">{post.title}</div>
+                          <div className="text-xs text-[#756791]">/{post.slug}</div>
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             post.status === 'published'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-amber-100 text-amber-700'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-amber-100 text-amber-800'
                           }`}>
                             {post.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-[#756791]">
                           {post.published_at ? new Date(post.published_at).toLocaleDateString() : 'Draft'}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <Link
                               to={`/blog/${post.slug}`}
-                              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+                              className="p-1.5 rounded-lg hover:bg-[#F5F3EF] text-[#756791] hover:text-[#141821]"
                             >
                               <Eye className="w-4 h-4" />
                             </Link>
-                            <button className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-500 hover:text-blue-600">
+                            <button className="p-1.5 rounded-lg hover:bg-[#F5F3EF] text-[#756791] hover:text-[#5B25C1]">
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button className="p-1.5 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600">
+                            <button className="p-1.5 rounded-lg hover:bg-red-50 text-[#756791] hover:text-red-600">
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
@@ -349,57 +349,57 @@ export default function AdminDashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            className="bg-white rounded-2xl shadow-sm border border-[#E8E5DF] overflow-hidden"
           >
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">All Users</h2>
+            <div className="p-6 border-b border-[#E8E5DF]">
+              <h2 className="text-lg font-semibold text-[#141821]">All Users</h2>
             </div>
             {loading ? (
-              <div className="p-8 text-center text-gray-500">Loading...</div>
+              <div className="p-8 text-center text-[#756791]">Loading...</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-[#F5F3EF]">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">User</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Joined</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-[#756791] uppercase">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-[#E8E5DF]">
                     {users.map((u) => (
-                      <tr key={u.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={u.id} className="hover:bg-[#F5F3EF] transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#271868] to-[#40208e] flex items-center justify-center">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#221854] to-[#5B25C1] flex items-center justify-center">
                               <span className="text-white text-xs font-bold">
                                 {(u.display_name || u.email || 'U').charAt(0).toUpperCase()}
                               </span>
                             </div>
                             <div>
-                              <div className="font-medium text-gray-900 text-sm">{u.display_name || 'Unnamed'}</div>
-                              <div className="text-xs text-gray-500">{u.email}</div>
+                              <div className="font-medium text-[#141821] text-sm">{u.display_name || 'Unnamed'}</div>
+                              <div className="text-xs text-[#756791]">{u.email}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             u.role === 'admin'
-                              ? 'bg-red-100 text-red-700'
+                              ? 'bg-red-100 text-red-800'
                               : u.role === 'agent'
-                              ? 'bg-purple-100 text-purple-700'
-                              : 'bg-gray-100 text-gray-700'
+                              ? 'bg-[#F5F3EF] text-[#5B25C1]'
+                              : 'bg-[#F5F3EF] text-[#756791]'
                           }`}>
                             {u.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-[#756791]">
                           {new Date(u.created_at).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <button className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-500 hover:text-blue-600">
+                            <button className="p-1.5 rounded-lg hover:bg-[#F5F3EF] text-[#756791] hover:text-[#5B25C1]">
                               <Edit className="w-4 h-4" />
                             </button>
                           </div>

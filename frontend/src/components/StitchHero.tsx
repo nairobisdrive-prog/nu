@@ -1,191 +1,286 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Search, SlidersHorizontal } from 'lucide-react';
-import { propertiesApi } from '../lib/api';
-
-interface HeroProperty {
-  id: number;
-  title: string;
-  address: string;
-  price: number;
-  price_type: string;
-  images: string[];
-}
+import { useState, useEffect, useRef } from 'react';
 
 export default function StitchHero() {
-  const { scrollYProgress } = useScroll();
-  const rotateX = useTransform(scrollYProgress, [0, 0.22], [18, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.22], [0, 120]);
-  const scale = useTransform(scrollYProgress, [0, 0.22], [0.92, 1.05]);
-  const opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.12]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [query, setQuery] = useState('');
-  const [featured, setFeatured] = useState<HeroProperty[]>([]);
-
+  // Close dropdown on outside click
   useEffect(() => {
-    async function fetchFeatured() {
-      try {
-        const data = await propertiesApi.list({ limit: '4' });
-        setFeatured(data.properties?.slice(0, 4) || []);
-      } catch (err) {
-        console.error('Failed to fetch featured:', err);
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
       }
     }
-    fetchFeatured();
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
 
-  const formatPrice = (price: number, priceType: string) => {
-    const fmt = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'MXN',
-      maximumFractionDigits: 0,
-    }).format(price);
-    return priceType === 'short_term' ? `${fmt} / night` : `${fmt}`;
-  };
+  // Canvas grid animation
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (query.trim()) {
-      window.location.href = `/rentals/short-term?location=${encodeURIComponent(query)}`;
+    let animationId: number;
+    let offset = 0;
+
+    function resize() {
+      if (!canvas) return;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
     }
-  };
+
+    function draw() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const gridSize = 40;
+      offset = (offset + 0.3) % gridSize;
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+
+      for (let x = offset; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      for (let y = offset; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      animationId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    window.addEventListener('resize', resize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
 
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden bg-[radial-gradient(circle_at_50%_0%,#f2e7f6_0%,#fff_38%,#fff_100%)] pt-32 lg:pt-40"
-    >
-      {/* Decorative blurs */}
-      <div className="pointer-events-none absolute -left-24 top-28 h-72 w-72 rounded-full bg-[#ccc2ed]/60 blur-3xl" />
-      <div className="pointer-events-none absolute right-0 top-12 h-96 w-96 rounded-full bg-[#f2e7f6] blur-3xl" />
+    <>
+      {/* Left Sidebar */}
+      <aside className="fixed left-0 top-0 h-full w-16 border-r border-gray-300 flex flex-col items-center py-6 z-50 bg-xa-cream">
+        <div className="mb-12">
+          <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <rect height="16" stroke="black" strokeWidth="2" width="16" x="4" y="4"></rect>
+            <rect fill="black" height="6" width="6" x="9" y="9"></rect>
+          </svg>
+        </div>
+        <div className="flex-1 flex flex-col justify-center items-center gap-12">
+          <span className="vertical-text text-[10px] tracking-widest font-bold text-gray-400">2024 UI/UX</span>
+          <span className="vertical-text text-xs tracking-[0.3em] font-bold text-xa-purple uppercase">Mexico Real Estate</span>
+        </div>
+        <div className="mt-auto space-y-6">
+          <button className="hover:opacity-60 transition-opacity">
+            <svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg>
+          </button>
+          <button className="hover:opacity-60 transition-opacity">
+            <svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48ZM104,136H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"></path></svg>
+          </button>
+        </div>
+      </aside>
 
-      <div className="mx-auto max-w-[1400px] px-5 text-center lg:px-10">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto mb-8 inline-flex items-center gap-2 rounded-full border border-[#ccc2ed] bg-white/70 px-4 py-2 text-sm font-semibold text-[#523575] shadow-sm backdrop-blur-xl"
-        >
-          <Sparkles size={16} /> 90%+ of active local listings, updated in one place
-        </motion.div>
+      {/* Hero Wrapper (offset by sidebar) */}
+      <main className="ml-16 min-h-screen relative flex flex-col bg-white">
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.08, duration: 0.8 }}
-          className="mx-auto max-w-6xl text-5xl font-semibold leading-[0.98] tracking-[-0.075em] text-[#141821] sm:text-7xl lg:text-[112px]"
-        >
-          Mexico real estate, finally in sync.
-        </motion.h1>
+        {/* Header Nav */}
+        <header className="relative flex items-center h-20 border-b border-gray-200">
+          {/* Left: Logo */}
+          <div className="flex items-center pl-12 z-10">
+            <img src="/xaan-logo.png" alt="XA'AN" className="h-10 w-auto object-contain" />
+          </div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.18, duration: 0.75 }}
-          className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[#756791] sm:text-xl"
-        >
-          Xa'an replaces the broker-site maze, Facebook Marketplace scrolling, and street-sign
-          guessing with one reliably refreshed database for homes and condos for sale across Mexico.
-        </motion.p>
-
-        {/* 3D Card Stack Container */}
-        <motion.div
-          style={{ rotateX, y, scale, opacity, transformPerspective: 1100 }}
-          className="relative mx-auto mt-14 max-w-6xl rounded-[44px] border border-white/80 bg-white/55 p-3 shadow-2xl shadow-[#523575]/18 backdrop-blur-2xl"
-        >
-          <div className="absolute inset-x-12 -top-5 h-10 rounded-full bg-[#ccc2ed]/60 blur-2xl" />
-          <div className="grid overflow-hidden rounded-[34px] bg-[#141821] p-3 text-left md:grid-cols-[1.1fr_0.9fr]">
-            {/* Left — Stacked property cards */}
-            <div className="relative min-h-[430px] overflow-hidden rounded-[26px] bg-[#f2e7f6]">
-              {featured.length > 0 ? (
-                featured.map((property, index) => {
-                  const images =
-                    typeof property.images === 'string'
-                      ? JSON.parse(property.images)
-                      : property.images;
-                  return (
-                    <motion.div
-                      key={property.id}
-                      initial={{ opacity: 0, y: 80, rotate: index % 2 ? -4 : 4 }}
-                      animate={{
-                        opacity: 1,
-                        y: index * 42,
-                        rotate: index % 2 ? -3 : 3,
-                      }}
-                      transition={{ delay: 0.2 + index * 0.12, duration: 0.7 }}
-                      className="absolute left-[8%] top-[7%] w-[78%] overflow-hidden rounded-[28px] border border-white/50 bg-white shadow-2xl"
-                    >
-                      <img
-                        src={images?.[0] || '/images/placeholder.jpg'}
-                        alt={property.title}
-                        className="h-48 w-full object-cover"
-                      />
-                      <div className="p-5">
-                        <div className="text-2xl font-semibold tracking-[-0.04em] text-[#141821]">
-                          {formatPrice(property.price, property.price_type)}
-                        </div>
-                        <p className="mt-1 text-sm text-[#756791]">
-                          {property.address || property.title}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#ccc2ed] border-t-[#523575]" />
-                </div>
-              )}
-            </div>
-
-            {/* Right — Search + copy */}
-            <div className="flex flex-col justify-between p-7 text-white">
-              <div>
-                <div className="w-fit rounded-full bg-white/10 px-4 py-2 text-sm text-[#ccc2ed]">
-                  Live inventory engine
-                </div>
-                <h2 className="mt-6 text-4xl font-semibold tracking-[-0.055em]">
-                  From scattered signs to searchable certainty.
-                </h2>
+          {/* Center: Search Bar (absolutely centered in header) */}
+          <div className="absolute left-1/2 -translate-x-1/2 w-[580px]">
+            <div className="flex items-center bg-white border border-gray-300 rounded-full shadow-sm h-11 overflow-hidden">
+              {/* Toggle */}
+              <div className="flex items-center gap-0.5 pl-3 pr-3 border-r border-gray-200 flex-shrink-0">
+                <button className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full bg-[#221854] text-white">Short Term</button>
+                <button className="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full text-gray-500 hover:bg-gray-100 transition-colors">Long Term</button>
               </div>
-              <div className="rounded-[28px] bg-white p-3 shadow-2xl">
-                <form
-                  onSubmit={handleSearch}
-                  className="flex flex-col gap-3 rounded-[26px] border border-[#ccc2ed]/70 bg-white p-2 shadow-xl shadow-[#523575]/8 md:flex-row"
-                >
-                  <div className="flex flex-1 items-center gap-3 px-4 py-3">
-                    <Search className="text-[#523575]" size={23} />
-                    <input
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      className="w-full bg-transparent text-lg font-medium text-[#141821] outline-none placeholder:text-[#a297b9]"
-                      placeholder="Search by city, neighborhood, address"
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <Link
-                      to="/rentals/short-term"
-                      className="rounded-2xl border border-[#f2e7f6] px-4 py-3 text-sm font-semibold text-[#4b3965] flex items-center gap-2"
-                    >
-                      <SlidersHorizontal size={16} /> Filters
-                    </Link>
-                    <button
-                      type="submit"
-                      className="rounded-2xl bg-[#141821] px-6 py-3 text-center font-semibold text-white transition hover:bg-[#50267a]"
-                    >
-                      Search homes
-                    </button>
-                  </div>
-                </form>
+              {/* Location */}
+              <div className="flex items-center gap-2 px-4 flex-1 min-w-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" strokeWidth="2" className="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <input type="text" placeholder="Where to?" className="bg-transparent text-sm text-[#141821] placeholder-gray-400 outline-none border-0 ring-0 focus:ring-0 focus:outline-none w-full font-medium min-w-0"/>
               </div>
+              {/* Dates */}
+              <div className="flex items-center gap-2 px-3 flex-shrink-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" strokeWidth="2" className="flex-shrink-0"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span className="text-sm text-gray-400 whitespace-nowrap">Any week</span>
+              </div>
+              {/* Guests */}
+              <div className="flex items-center gap-2 px-3 flex-shrink-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" strokeWidth="2" className="flex-shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span className="text-sm text-gray-400">Guests</span>
+              </div>
+              {/* Search button */}
+              <button className="h-11 w-11 flex-shrink-0 bg-[#5B25C1] flex items-center justify-center hover:bg-[#221854] transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </button>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+
+          {/* Right: Nav */}
+          <nav className="flex-1 flex items-center justify-end">
+            <ul className="flex gap-10 text-xs font-bold tracking-widest uppercase mr-8">
+              <li><a className="hover:text-xa-purple transition-colors" href="#">Become a host</a></li>
+              <li><a className="hover:text-xa-purple transition-colors" href="#">FAQ</a></li>
+            </ul>
+            {/* Login with dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="bg-xa-purple text-white px-8 h-20 flex items-center gap-3 cta-polygon hover:pr-12 transition-all duration-300"
+              >
+                <span className="text-xs font-bold tracking-widest uppercase">Login</span>
+                <svg fill="none" height="14" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div className={`${dropdownOpen ? '' : 'hidden'} absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50`}>
+                <a href="#" className="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <p className="text-xs font-bold tracking-widest uppercase text-[#141821]">Agent / Host</p>
+                </a>
+                <a href="#" className="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <p className="text-xs font-bold tracking-widest uppercase text-[#141821]">Guest</p>
+                </a>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        {/* Hero Content */}
+        <div className="flex-1 relative flex">
+
+          {/* Left Column */}
+          <section className="w-1/2 pt-10 pl-12 flex flex-col z-10">
+            <h1 className="text-[14rem] font-black leading-[0.8] tracking-tighter text-xa-dark mb-12">
+              XA&apos;AN<br/>ONE
+            </h1>
+            <div className="max-w-md">
+              <h2 className="text-xa-purple text-4xl font-extrabold leading-tight mb-6">
+                Real estate,<br/>redefined.
+              </h2>
+              <p className="text-sm leading-relaxed text-gray-700 font-medium">
+                The only aggregate real estate platform in Mexico. We simplify the search by unifying individual broker sites and marketplaces into one technical interface.
+              </p>
+            </div>
+            <div className="mt-auto dual-button">
+              <button className="btn-main group">
+                <span className="text-xs font-bold tracking-widest uppercase mr-4">Discover Xa&apos;an</span>
+                <svg className="group-hover:translate-x-1 transition-transform" fill="none" height="18" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="18"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              </button>
+              <button className="btn-secondary group">
+                <span className="text-xs font-bold tracking-widest uppercase mr-4">Watch film</span>
+                <svg className="group-hover:scale-110 transition-transform" fill="none" height="20" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="20"><circle cx="12" cy="12" r="10"></circle><polygon fill="currentColor" points="10 8 16 12 10 16 10 8"></polygon></svg>
+              </button>
+            </div>
+          </section>
+
+          {/* Right / Background */}
+          <section className="absolute inset-0 flex items-center justify-end overflow-hidden pointer-events-none">
+            <div className="floating-circle absolute -right-20 top-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-xa-purple rounded-full z-0"></div>
+            <canvas ref={canvasRef} className="absolute inset-0 z-0"></canvas>
+            {/* Feature Points */}
+            <div className="z-20 mr-24 space-y-16 text-white">
+              <div className="flex items-center gap-6">
+                <div className="w-10 h-10 border border-white/30 rounded-full flex items-center justify-center">
+                  <svg fill="white" height="16" viewBox="0 0 256 256" width="16"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path></svg>
+                </div>
+                <div className="border-b border-white/20 pb-4 w-64">
+                  <span className="text-[10px] tracking-[0.2em] font-bold uppercase opacity-80 block mb-1">Feature 01</span>
+                  <h4 className="text-xs font-bold tracking-widest uppercase">Aggregate Search</h4>
+                </div>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="w-10 h-10 border border-white/30 rounded-full flex items-center justify-center">
+                  <svg fill="white" height="16" viewBox="0 0 256 256" width="16"><path d="M208,40H48A16,16,0,0,0,32,56V200a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V56A16,16,0,0,0,208,40Zm0,160H48V56H208V200ZM176,88a12,12,0,1,1-12-12A12,12,0,0,1,176,88Z"></path></svg>
+                </div>
+                <div className="border-b border-white/20 pb-4 w-64">
+                  <span className="text-[10px] tracking-[0.2em] font-bold uppercase opacity-80 block mb-1">Feature 02</span>
+                  <h4 className="text-xs font-bold tracking-widest uppercase">Market Intelligence</h4>
+                </div>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="w-10 h-10 border border-white/30 rounded-full flex items-center justify-center">
+                  <svg fill="white" height="16" viewBox="0 0 256 256" width="16"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"></path><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-88a8,8,0,0,1-8,8H136v24a8,8,0,0,1-16,0V136H96a8,8,0,0,1,0-16h24V96a8,8,0,0,1,16,0v24h24A8,8,0,0,1,168,128Z"></path></svg>
+                </div>
+                <div className="border-b border-white/20 pb-4 w-64">
+                  <span className="text-[10px] tracking-[0.2em] font-bold uppercase opacity-80 block mb-1">Feature 03</span>
+                  <h4 className="text-xs font-bold tracking-widest uppercase">Curated Portfolio</h4>
+                </div>
+              </div>
+            </div>
+            {/* Floating Tablet Card */}
+            <div className="absolute left-1/2 bottom-20 w-[312px] pointer-events-auto -translate-x-[40%]">
+              <div className="relative bg-black rounded-[36px] p-3 shadow-2xl border border-white/10 overflow-hidden group">
+                {/* phone top bar */}
+                <div className="flex justify-center mb-2">
+                  <div className="w-16 h-1 bg-white/20 rounded-full"></div>
+                </div>
+                <img
+                  alt="Architecture Wireframe"
+                  className="w-full h-auto rounded-[24px] grayscale contrast-125 transition-all duration-700 group-hover:scale-105"
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=800&fit=crop"
+                />
+                {/* subtle label */}
+                <div className="mt-2 text-center text-[8px] text-white/30 font-bold tracking-widest uppercase">VILLA — WIREFRAME 01</div>
+              </div>
+            </div>
+
+            {/* Bottom Right Card — App Promo */}
+            <div className="absolute bottom-12 right-6 w-[320px] bg-white/92 backdrop-blur-xl rounded-2xl border border-gray-200 z-30 pointer-events-auto overflow-hidden flex h-[130px]">
+              {/* Left 2/3: title + QR */}
+              <div className="flex-1 px-5 py-4 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-sm font-black tracking-tighter uppercase mb-0.5">XA&apos;AN</h3>
+                  <p className="text-[8px] tracking-[0.18em] font-bold text-gray-400 uppercase">Download the app</p>
+                </div>
+                <div className="flex items-end gap-3">
+                  <div className="w-14 h-14 bg-xa-dark rounded flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" fill="white" className="w-8 h-8">
+                      <rect x="4" y="4" width="6" height="6" />
+                      <rect x="14" y="4" width="6" height="6" />
+                      <rect x="4" y="14" width="6" height="6" />
+                      <rect x="14" y="14" width="6" height="6" />
+                    </svg>
+                  </div>
+                  <p className="text-[9px] text-gray-400 leading-tight mb-0.5">Scan to search<br/>Mexico&apos;s full market</p>
+                </div>
+              </div>
+              {/* Right 1/3: app screenshot */}
+              <div className="w-[88px] flex-shrink-0 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=200&h=400&fit=crop"
+                  alt="Xa'an App"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+          </section>
+
+        </div>
+        {/* END Hero Content */}
+
+        {/* Hero Status Bar */}
+        <footer className="h-8 border-t border-gray-200 flex justify-end items-center px-4 bg-gray-100/50">
+          <div className="bg-xa-dark text-white text-[9px] px-3 py-1 rounded font-bold tracking-widest uppercase">54 FPS</div>
+        </footer>
+
+      </main>
+    </>
   );
 }

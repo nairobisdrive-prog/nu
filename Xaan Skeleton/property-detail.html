@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>XA'AN | Property Detail</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@300;500&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'xa-purple': '#221854',
+            'xa-violet': '#5b25c1',
+            'xa-dark':   '#141821',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #ffffff; color: #141821; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* Accordion crossfade images */
+    .acc-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.9s ease; }
+    .acc-col { flex: 1; display: flex; flex-direction: column; align-items: center; cursor: default; }
+    .acc-col:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+    .acc-line { flex: 1; width: 1px; transition: background 0.4s ease; }
+    .acc-title {
+      padding: 10px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: center;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.35s, font-weight 0.35s;
+      white-space: pre-line;
+    }
+    .acc-col.active .acc-title { color: #ffffff; font-weight: 500; }
+    .acc-col.active .acc-line  { background: rgba(255,255,255,0.55); }
+
+    /* Right image slider */
+    .img-slider-track { display: flex; flex-direction: column; transition: transform 0.5s ease; }
+   @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(10px, -20px); }
+    }
+    .floating-circle { animation: float 10s ease-in-out infinite; }
+    .dual-button { display: flex; height: 80px; }
+    .btn-main {
+      background-color: #221854;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      position: relative;
+      clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-secondary {
+      background-color: #0F0F0F;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      margin-left: -20px;
+      transition: all 0.3s ease;
+    }
+    .cta-polygon { clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); }
+  
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- ============================================================
+     GLOBAL HEADER
+     ============================================================ -->
+<!-- Header Nav -->
+<header class="relative flex items-center h-20 border-b border-gray-200">
+  <!-- Left: Logo -->
+  <div class="flex items-center pl-32 z-10">
+    <img alt="XA'AN" class="h-10 w-auto object-contain"
+      src="C:\Users\frazi\Desktop\xaan\reference images\xaan logo transp bg.png" />
+  </div>
+
+  <!-- Center: Search Bar (absolutely centered in header) -->
+  <div class="absolute left-1/2 -translate-x-1/2 w-[580px]">
+    <div class="flex items-center bg-white border border-gray-300 rounded-full shadow-sm h-11 overflow-hidden">
+      <!-- Toggle -->
+      <div class="flex items-center gap-0.5 pl-3 pr-3 border-r border-gray-200 flex-shrink-0">
+        <button
+          class="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full bg-[#221854] text-white">Short
+          Term</button>
+        <button
+          class="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full text-gray-500 hover:bg-gray-100 transition-colors">Long
+          Term</button>
+      </div>
+      <!-- Location -->
+      <div class="flex items-center gap-2 px-4 flex-1 min-w-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"
+          class="flex-shrink-0">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+        <input type="text" placeholder="Where to?"
+          class="bg-transparent text-sm text-[#141821] placeholder-gray-400 outline-none border-0 ring-0 focus:ring-0 focus:outline-none w-full font-medium min-w-0" />
+      </div>
+      <!-- Dates -->
+      <div class="flex items-center gap-2 px-3 flex-shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" stroke-width="2"
+          class="flex-shrink-0">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        <span class="text-sm text-gray-400 whitespace-nowrap">Any week</span>
+      </div>
+      <!-- Guests -->
+      <div class="flex items-center gap-2 px-3 flex-shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" stroke-width="2"
+          class="flex-shrink-0">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <span class="text-sm text-gray-400">Guests</span>
+      </div>
+      <!-- Search button -->
+      <button
+        class="h-11 w-11 flex-shrink-0 bg-[#5B25C1] flex items-center justify-center hover:bg-[#221854] transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Right: Nav -->
+  <nav class="flex-1 flex items-center justify-end">
+    <ul class="flex gap-10 text-xs font-bold tracking-widest uppercase mr-8">
+      <li><a class="hover:text-xa-purple transition-colors" href="#">Become a host</a></li>
+      <li><a class="hover:text-xa-purple transition-colors" href="#">FAQ</a></li>
+    </ul>
+    <!-- Login with dropdown -->
+    <div class="relative" id="loginMenu">
+      <button onclick="document.getElementById('loginDropdown').classList.toggle('hidden')"
+        class="bg-xa-purple text-white px-8 h-20 flex items-center gap-3 cta-polygon hover:pr-12 transition-all duration-300">
+        <span class="text-xs font-bold tracking-widest uppercase">Login</span>
+        <svg fill="none" height="14" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      <div id="loginDropdown"
+        class="hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+        <a href="#"
+          class="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <p class="text-xs font-bold tracking-widest uppercase text-[#141821]">Agent / Host</p>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <p class="text-xs font-bold tracking-widest uppercase text-[#141821]">Guest</p>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ============================================================
+     HERO — 100vh
+     ============================================================ -->
+<div style="height:100vh; display:flex; flex-direction:column; padding-top:80px;">
+
+  <!-- Title row -->
+  <div class="px-8 lg:px-14 flex items-start justify-between flex-shrink-0" style="padding-top:5px; padding-bottom:12px;">
+    <div>
+      <p class="text-lg font-normal uppercase tracking-[0.22em] text-[#221854] leading-8">Property Details Page</p>
+      <h1 class="text-4xl sm:text-6xl font-semibold tracking-[-0.06em] text-[#141821] leading-tight">A beautiful decision room.</h1>
+    </div>
+    <div class="flex items-center gap-3 mt-1">
+      <button class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-sm font-semibold text-[#141821] hover:border-[#5B25C1] transition-colors">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+      <button class="flex items-center gap-2 px-4 py-2 rounded-full bg-[#141821] text-white text-sm font-semibold hover:bg-[#221854] transition-colors">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Save
+      </button>
+    </div>
+  </div>
+
+  <!-- Gallery row — fills remaining height minus 10px bottom padding -->
+  <div class="flex-1 px-8 lg:px-14 flex gap-4 min-h-0" style="padding-bottom:10px;">
+
+    <!-- LEFT: Accordion (GPT-style dark shell) -->
+    <div class="flex-1 min-w-0 rounded-[38px] overflow-hidden relative" style="min-height:0; background:#141821; padding:12px;"><div class="w-full h-full rounded-[28px] overflow-hidden relative">
+
+      <!-- Crossfade background images -->
+      <img id="acc-img-0" class="acc-bg" style="opacity:1; z-index:1;"
+           src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&h=700&fit=crop" alt="Restaurants"/>
+      <img id="acc-img-1" class="acc-bg" style="opacity:0; z-index:1;"
+           src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=900&h=700&fit=crop" alt="Things to Do"/>
+      <img id="acc-img-2" class="acc-bg" style="opacity:0; z-index:1;"
+           src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=900&h=700&fit=crop" alt="Weather"/>
+      <img id="acc-img-3" class="acc-bg" style="opacity:0; z-index:1;"
+           src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=900&h=700&fit=crop" alt="Cost of Living"/>
+
+      <!-- Dark overlay -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.48);z-index:2;"></div>
+
+      <!-- 4 columns -->
+      <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:row;" id="accordion">
+        <div class="acc-col active" data-idx="0" onmouseenter="activateAcc(0)">
+          <div class="acc-line"></div>
+          <div class="acc-title">Mazatlan<br/>Restaurants</div>
+          <div class="acc-line"></div>
+        </div>
+        <div class="acc-col" data-idx="1" onmouseenter="activateAcc(1)">
+          <div class="acc-line"></div>
+          <div class="acc-title">Things to Do<br/>in Mazatlan</div>
+          <div class="acc-line"></div>
+        </div>
+        <div class="acc-col" data-idx="2" onmouseenter="activateAcc(2)">
+          <div class="acc-line"></div>
+          <div class="acc-title">Mazatlan<br/>Weather</div>
+          <div class="acc-line"></div>
+        </div>
+        <div class="acc-col" data-idx="3" onmouseenter="activateAcc(3)">
+          <div class="acc-line"></div>
+          <div class="acc-title">Cost of Living<br/>in Mazatlan</div>
+          <div class="acc-line"></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- RIGHT: 2 stacked images + vertical slider controls -->
+    <div class="flex flex-col gap-0 relative" style="width:300px; flex-shrink:0;">
+
+      <!-- Slider viewport — shows 2 images at once -->
+      <div class="flex-1 overflow-hidden rounded-[20px] relative" style="min-height:0;">
+        <div id="sliderTrack" class="img-slider-track h-full">
+          <div style="height:50%; padding-bottom:4px;">
+            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=350&fit=crop"
+                 class="w-full h-full object-cover rounded-[16px]" alt="Interior"/>
+          </div>
+          <div style="height:50%; padding-top:4px;">
+            <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=500&h=350&fit=crop"
+                 class="w-full h-full object-cover rounded-[16px]" alt="Exterior"/>
+          </div>
+          <div style="height:50%; padding-top:4px;">
+            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=500&h=350&fit=crop"
+                 class="w-full h-full object-cover rounded-[16px]" alt="Pool"/>
+          </div>
+          <div style="height:50%; padding-top:4px;">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&h=350&fit=crop"
+                 class="w-full h-full object-cover rounded-[16px]" alt="View"/>
+          </div>
+          <div style="height:50%; padding-top:4px;">
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&h=350&fit=crop"
+                 class="w-full h-full object-cover rounded-[16px]" alt="Garden"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider controls -->
+      <div class="flex flex-col gap-2 absolute right-3 top-1/2 -translate-y-1/2 z-10">
+        <button onclick="slideUp()"
+                class="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-white transition-colors border border-gray-200">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <button onclick="slideDown()"
+                class="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-white transition-colors border border-gray-200">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- END HERO -->
+
+<!-- ============================================================
+     MASONRY GALLERY — 14 images + load more
+     ============================================================ -->
+<section class="bg-white pt-24 pb-16">
+
+  <!-- Header -->
+  <div class="px-8 lg:px-14 mb-6 flex items-end justify-between">
+    <div>
+      <p class="text-lg font-normal uppercase tracking-[0.22em] text-[#221854] leading-8">Gallery</p>
+      <h2 class="text-4xl sm:text-5xl font-semibold tracking-[-0.06em] text-[#141821]">All photos</h2>
+    </div>
+    <span class="text-sm text-gray-400 font-medium" id="photo-count">Showing 14 of 48</span>
+  </div>
+
+  <!-- 16-col × 14-row fixed grid (~67vh ≈ 1/3 smaller than 100vh) -->
+  <div id="masonry-grid" style="
+    width:100%; height:67vh; padding:0 32px;
+    display:grid;
+    grid-template-columns:repeat(16,1fr);
+    grid-template-rows:repeat(14,1fr);
+    gap:8px;
+  ">
+    <div style="grid-column:1/6;  grid-row:1/6;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&h=600&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:6/9;  grid-row:1/11; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=500&h=900&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:9/12; grid-row:1/4;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:12/-1; grid-row:1/4;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&h=400&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:1/4;  grid-row:6/11; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&h=700&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:4/6;  grid-row:6/7;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=200&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:4/6;  grid-row:7/11; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=600&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:1/6;  grid-row:11/-1; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800&h=400&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:6/12; grid-row:11/-1; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&h=400&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:9/12; grid-row:4/11; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=500&h=800&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:12/13; grid-row:4/6;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=200&h=300&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:13/-1; grid-row:4/6;  border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:12/-1; grid-row:6/13; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=600&h=900&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+    <div style="grid-column:12/-1; grid-row:13/-1; border-radius:10px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=200&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/></div>
+  </div>
+
+  <!-- Load More -->
+  <div id="load-more-wrap" class="flex justify-center mt-10">
+    <button onclick="
+      document.getElementById('load-more-wrap').style.display='none';
+      document.getElementById('photo-count').textContent='Showing 48 of 48';
+    " class="px-10 py-3.5 rounded-full border-2 border-[#221854] text-[#221854] text-xs font-bold tracking-widest uppercase hover:bg-[#221854] hover:text-white transition-all duration-300">
+      Load More Photos
+    </button>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     BODY — Property Info + Agent Sidebar
+     ============================================================ -->
+<div class="bg-white px-8 lg:px-14 py-12">
+  <div class="max-w-7xl mx-auto flex gap-12">
+
+    <!-- Left: Main content -->
+    <div class="flex-1 min-w-0">
+
+      <!-- Title + Price + Badge -->
+      <div class="flex flex-wrap items-start justify-between gap-4 mb-2">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-[#141821] mb-1">Beachfront Paradise in Cancún</h2>
+          <p class="flex items-center gap-1.5 text-sm text-[#756791]">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Zona Hotelera, Km 12.5, Cancún, Quintana Roo
+          </p>
+        </div>
+        <div class="text-right">
+          <p class="text-3xl font-black tracking-tight text-[#141821]">$2,400<span class="text-lg font-semibold text-[#756791]">/n</span></p>
+          <span class="inline-block mt-1 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-[#f0ebff] text-[#5B25C1]">For Rent</span>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-4 gap-4 py-8 border-t border-b border-gray-100 my-6">
+        <div class="text-center">
+          <svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="1.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg>
+          <p class="text-2xl font-bold text-[#141821]">4</p>
+          <p class="text-sm text-[#756791]">Bedrooms</p>
+        </div>
+        <div class="text-center">
+          <svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="1.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg>
+          <p class="text-2xl font-bold text-[#141821]">4</p>
+          <p class="text-sm text-[#756791]">Bathrooms</p>
+        </div>
+        <div class="text-center">
+          <svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/></svg>
+          <p class="text-2xl font-bold text-[#141821]">3,800</p>
+          <p class="text-sm text-[#756791]">Square Meters</p>
+        </div>
+        <div class="text-center">
+          <svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <p class="text-2xl font-bold text-[#141821]">4</p>
+          <p class="text-sm text-[#756791]">Parking</p>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-[#141821] mb-3">About this property</h3>
+        <p class="text-base text-[#242424] leading-7">Experience beachfront luxury in this stunning Cancún villa. Wake up to panoramic ocean views, spend your days at the private pool, and explore the Zona Hotelera's world-class dining and nightlife — all steps from your door. Fully furnished with premium appliances and concierge-level amenities.</p>
+      </div>
+
+      <!-- Amenities -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-[#141821] mb-4">Features &amp; amenities</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Private pool
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Ocean view
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Air conditioning
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            WiFi included
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Full kitchen
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Parking x4
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Security 24/7
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Gym access
+          </div>
+          <div class="flex items-center gap-2 text-sm text-[#242424]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Beachfront
+          </div>
+        </div>
+      </div>
+
+      <!-- Property details grid -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-[#141821] mb-4">Property details</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Type</p>
+            <p class="text-sm font-semibold text-[#141821]">Villa</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Year Built</p>
+            <p class="text-sm font-semibold text-[#141821]">2019</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Listed</p>
+            <p class="text-sm font-semibold text-[#141821]">May 2025</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Status</p>
+            <p class="text-sm font-semibold text-[#141821]">Available</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Views</p>
+            <p class="text-sm font-semibold text-[#141821]">1,240</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs font-bold tracking-widest uppercase text-[#756791] mb-1">Last Updated</p>
+            <p class="text-sm font-semibold text-[#141821]">2 days ago</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Booking widget (sticky) -->
+    <div class="w-80 flex-shrink-0">
+      <div class="sticky top-24">
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg">
+
+          <!-- Price -->
+          <div class="mb-5">
+            <span class="text-2xl font-bold text-[#141821] underline">$2,400 MXN</span>
+            <span class="text-base text-[#242424] font-normal"> por 2 noches</span>
+          </div>
+
+          <!-- Date inputs -->
+          <div class="border border-gray-300 rounded-xl overflow-hidden mb-3">
+            <div class="grid grid-cols-2 divide-x divide-gray-300">
+              <div class="p-3">
+                <p class="text-[10px] font-bold tracking-widest uppercase text-[#141821] mb-0.5">Llegada</p>
+                <input type="date" value="2026-05-22" class="text-sm text-[#141821] w-full border-0 ring-0 focus:ring-0 focus:outline-none p-0 bg-transparent"/>
+              </div>
+              <div class="p-3">
+                <p class="text-[10px] font-bold tracking-widest uppercase text-[#141821] mb-0.5">Salida</p>
+                <input type="date" value="2026-05-24" class="text-sm text-[#141821] w-full border-0 ring-0 focus:ring-0 focus:outline-none p-0 bg-transparent"/>
+              </div>
+            </div>
+            <div class="border-t border-gray-300 p-3 flex items-center justify-between">
+              <div>
+                <p class="text-[10px] font-bold tracking-widest uppercase text-[#141821] mb-0.5">Huéspedes</p>
+                <span class="text-sm text-[#141821]">1 huésped</span>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+
+          <!-- Cancellation notice -->
+          <p class="text-sm text-center text-[#242424] mb-3">Cancelación gratuita antes del <strong>21 de mayo</strong></p>
+
+          <!-- Reserve button -->
+          <button class="w-full py-4 rounded-full bg-gradient-to-r from-[#5B25C1] to-[#221854] text-white font-bold text-base tracking-wide hover:opacity-90 transition-opacity mb-3">
+            Reservar
+          </button>
+
+          <p class="text-sm text-center text-[#756791]">Aún no se te cobrará nada</p>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script>
+  // --- Accordion ---
+  let accActive = 0;
+  function activateAcc(idx) {
+    if (idx === accActive) return;
+    // Hide old bg
+    document.getElementById('acc-img-' + accActive).style.opacity = 0;
+    // Show new bg
+    document.getElementById('acc-img-' + idx).style.opacity = 1;
+    // Update column states
+    const cols = document.querySelectorAll('.acc-col');
+    cols[accActive].classList.remove('active');
+    cols[idx].classList.add('active');
+    accActive = idx;
+  }
+
+  // --- Right image slider ---
+  let sliderPos = 0;
+  const totalImages = 5;
+  const visibleImages = 2;
+  const maxPos = totalImages - visibleImages;
+
+  function updateSlider() {
+    const track = document.getElementById('sliderTrack');
+    const pct = (sliderPos / totalImages) * 100;
+    track.style.transform = 'translateY(-' + pct + '%)';
+  }
+  function slideUp() {
+    if (sliderPos > 0) { sliderPos--; updateSlider(); }
+  }
+  function slideDown() {
+    if (sliderPos < maxPos) { sliderPos++; updateSlider(); }
+  }
+
+  // Login dropdown close
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('loginMenu');
+    if (menu && !menu.contains(e.target)) {
+      document.getElementById('loginDropdown').classList.add('hidden');
+    }
+  });
+</script>
+
+</body>
+</html>

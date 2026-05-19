@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
@@ -13,25 +13,36 @@ import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 
+function AppRoutes() {
+  const location = useLocation();
+  // Pages that have their own embedded header (hero headers, dark dashboard header, etc.)
+  const pagesWithOwnHeader = ['/', '/dashboard'];
+  const hideHeader = pagesWithOwnHeader.includes(location.pathname);
+
+  return (
+    <Layout hideHeader={hideHeader}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/rentals/short-term" element={<ShortTermRentalsPage />} />
+        <Route path="/rentals/long-term" element={<LongTermRentalsPage />} />
+        <Route path="/property/:id" element={<PropertyDetailsPage />} />
+        <Route path="/find-agent" element={<FindAgentPage />} />
+        <Route path="/agent/:id" element={<AgentProfilePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path="/admin" element={<AdminDashboardPage />} />
+      </Routes>
+    </Layout>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/rentals/short-term" element={<ShortTermRentalsPage />} />
-            <Route path="/rentals/long-term" element={<LongTermRentalsPage />} />
-            <Route path="/property/:id" element={<PropertyDetailsPage />} />
-            <Route path="/find-agent" element={<FindAgentPage />} />
-            <Route path="/agent/:id" element={<AgentProfilePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
-          </Routes>
-        </Layout>
+        <AppRoutes />
       </Router>
     </AuthProvider>
   );

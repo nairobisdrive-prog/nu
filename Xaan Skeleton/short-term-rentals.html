@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>XA'AN | Short Term Rentals</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'xa-purple':  '#221854',
+            'xa-violet':  '#5b25c1',
+            'xa-deep':    '#261856',
+            'xa-plum':    '#40208e',
+            'xa-accent':  '#7629a5',
+            'xa-cream':   '#F1EFE9',
+            'xa-dark':    '#141821',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #F5F3EF; color: #141821; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    .filter-panel { display: none; }
+    .filter-panel.open { display: block; }
+    .map-panel { display: none; }
+    .map-panel.open { display: grid; }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- ============================================================
+     GLOBAL HEADER
+     ============================================================ -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-16 flex items-center relative">
+
+  <!-- Left: Logo -->
+  <div class="flex items-center pl-8 z-10">
+    <a href="index.html" class="text-xl font-black tracking-tighter text-[#221854]">XA'AN</a>
+  </div>
+
+  <!-- Center: Search Bar (absolutely centered) -->
+  <div class="absolute left-1/2 -translate-x-1/2 w-[580px]">
+    <div class="flex items-center bg-white border border-gray-300 rounded-full shadow-sm h-11 overflow-hidden">
+      <!-- Toggle -->
+      <div class="flex items-center gap-0.5 pl-3 pr-3 border-r border-gray-200 flex-shrink-0">
+        <button class="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full bg-[#221854] text-white">Short Term</button>
+        <button class="text-[11px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full text-gray-500 hover:bg-gray-100 transition-colors">Long Term</button>
+      </div>
+      <!-- Location -->
+      <div class="flex items-center gap-2 px-4 flex-1 min-w-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5B25C1" stroke-width="2" class="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input type="text" placeholder="Where to?" class="bg-transparent text-sm text-[#141821] placeholder-gray-400 outline-none border-0 ring-0 focus:ring-0 focus:outline-none w-full font-medium min-w-0"/>
+      </div>
+      <!-- Dates -->
+      <div class="flex items-center gap-2 px-3 flex-shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" stroke-width="2" class="flex-shrink-0"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="text-sm text-gray-400 whitespace-nowrap">Any week</span>
+      </div>
+      <!-- Guests -->
+      <div class="flex items-center gap-2 px-3 flex-shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#756791" stroke-width="2" class="flex-shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="text-sm text-gray-400">Guests</span>
+      </div>
+      <!-- Search button -->
+      <button class="h-11 w-11 flex-shrink-0 bg-[#5B25C1] flex items-center justify-center hover:bg-[#221854] transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Right: Nav -->
+  <nav class="flex-1 flex items-center justify-end">
+    <ul class="flex gap-10 text-xs font-bold tracking-widest uppercase mr-8">
+      <li><a class="hover:text-[#5B25C1] transition-colors" href="#">Become a host</a></li>
+      <li><a class="hover:text-[#5B25C1] transition-colors" href="#">FAQ</a></li>
+    </ul>
+    <!-- Login with dropdown -->
+    <div class="relative" id="loginMenu">
+      <button onclick="document.getElementById('loginDropdown').classList.toggle('hidden')"
+              class="bg-[#221854] text-white px-8 h-16 flex items-center gap-3 hover:bg-[#5B25C1] transition-colors">
+        <span class="text-xs font-bold tracking-widest uppercase">Login</span>
+        <svg fill="none" height="14" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div id="loginDropdown" class="hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+        <a href="#" class="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <p class="text-xs font-bold tracking-widest uppercase text-[#141821]">Agent / Host</p>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-colors">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#221854" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <p class="text-xs font-bold tracking-widest uppercase text-[#141821]">Guest</p>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('loginMenu');
+    if (menu && !menu.contains(e.target)) {
+      document.getElementById('loginDropdown').classList.add('hidden');
+    }
+  });
+</script>
+
+
+<!-- ============================================================
+     PAGE BODY
+     ============================================================ -->
+<div class="pt-16 min-h-screen">
+
+  <!-- Page Heading -->
+  <div class="bg-white px-6 lg:px-16 pt-12 pb-8 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto">
+      <p class="text-lg font-normal uppercase tracking-[0.22em] text-[#221854] leading-8 mb-2">Short Term Rentals</p>
+      <h1 class="text-4xl sm:text-6xl font-semibold tracking-[-0.06em] text-[#141821]">Find your next stay</h1>
+    </div>
+  </div>
+
+  <!-- Controls Bar -->
+  <div class="bg-white px-6 lg:px-16 py-4 border-b border-gray-100 sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Results count -->
+      <p class="text-sm text-[#756791] font-medium">60 properties found</p>
+
+      <div class="flex items-center gap-2">
+
+        <!-- Sort dropdown -->
+        <div class="relative">
+          <select class="appearance-none pl-4 pr-9 py-2.5 rounded-xl bg-white border border-gray-200 text-sm text-[#141821] font-medium cursor-pointer focus:outline-none focus:border-[#5B25C1]">
+            <option>Newest First</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+          </select>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#756791" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <!-- Filters button -->
+        <button onclick="document.getElementById('filterPanel').classList.toggle('open')"
+                class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-[#141821] hover:border-[#5B25C1] transition-colors">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          Filters
+        </button>
+
+        <!-- View toggle -->
+        <div class="flex items-center bg-white rounded-xl border border-gray-200 p-1 gap-1">
+          <button onclick="showGrid()" id="btn-grid"
+                  class="p-2 rounded-lg bg-[#221854] text-white transition-all">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button onclick="showMap()" id="btn-map"
+                  class="p-2 rounded-lg text-[#756791] hover:bg-gray-100 transition-all">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Panel (collapsible) -->
+  <div id="filterPanel" class="filter-panel bg-white border-b border-gray-100 px-6 lg:px-16 py-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-semibold text-[#141821]">Filters</h3>
+          <button class="text-sm font-medium text-[#5B25C1] hover:text-[#221854] transition-colors">Clear all</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Property Type</label>
+            <select class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]">
+              <option>All</option>
+              <option>Villa</option>
+              <option>Condo</option>
+              <option>Apartment</option>
+              <option>Casita</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Min Price /n</label>
+            <input type="number" placeholder="$0" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Max Price /n</label>
+            <input type="number" placeholder="$10,000" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Beds</label>
+            <select class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]">
+              <option>Any</option>
+              <option>1+</option>
+              <option>2+</option>
+              <option>3+</option>
+              <option>4+</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Baths</label>
+            <select class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]">
+              <option>Any</option>
+              <option>1+</option>
+              <option>2+</option>
+              <option>3+</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Check-in</label>
+            <input type="date" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#756791] uppercase tracking-wider mb-2">Check-out</label>
+            <input type="date" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-[#141821] focus:outline-none focus:border-[#5B25C1]"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid View -->
+  <div id="gridView" class="px-6 lg:px-16 py-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+      <!-- Card 1 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa Azure Bliss</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Mazatlán, Sinaloa</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 4 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 3 <span class="text-[#ccc2ed]">·</span>
+            $2,100<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Casa del Mar</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Puerto Vallarta, Jalisco</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 3 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            $1,450<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1602002418082-dd4a3f5b4a5b?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Condo Playa Norte</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Cancún, Quintana Roo</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            $1,925<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Casita Frente al Mar</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Tulum, Quintana Roo</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 1 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 1 <span class="text-[#ccc2ed]">·</span>
+            $1,400<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa Cielo Abierto</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Los Cabos, BCS</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 5 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 4 <span class="text-[#ccc2ed]">·</span>
+            $2,750<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Penthouse Reforma</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Ciudad de México, CDMX</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            $725<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Hacienda San Miguel</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">San Miguel de Allende, GTO</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 6 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 5 <span class="text-[#ccc2ed]">·</span>
+            $2,350<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Studio Colonia Roma</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Ciudad de México, CDMX</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 1 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 1 <span class="text-[#ccc2ed]">·</span>
+            $1,100<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa Palmeras</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Mérida, Yucatán</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 4 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 3 <span class="text-[#ccc2ed]">·</span>
+            $950<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 10 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Casa Cenote</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Tulum, Quintana Roo</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 3 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            $1,540<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 11 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Loft Polanco</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Ciudad de México, CDMX</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 2 <span class="text-[#ccc2ed]">·</span>
+            $1,400<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 12 -->
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+        <div class="relative overflow-hidden h-52">
+          <img src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=600&h=400&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#221854] text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full">Short Stay</div>
+          <button class="absolute top-3 right-3 w-7 h-7 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#141821" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-1">
+            <h3 class="text-base font-semibold tracking-[-0.03em] text-[#141821]">Villa Sunset Cabo</h3>
+            <span class="text-sm font-semibold text-[#5B25C1]">View</span>
+          </div>
+          <p class="text-sm text-[#756791] mb-1">Los Cabos, BCS</p>
+          <div class="flex items-center gap-2 text-sm text-[#756791]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M2 14h20M10 8V6a2 2 0 0 1 4 0v2"/></svg> 4 <span class="text-[#ccc2ed]">·</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3z"/><path d="M6 12V7a2 2 0 0 1 4 0"/></svg> 3 <span class="text-[#ccc2ed]">·</span>
+            $2,750<span class="text-xs text-[#756791]">/n</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Load More -->
+    <div class="max-w-7xl mx-auto mt-10 flex justify-center">
+      <button class="px-8 py-3 rounded-full border-2 border-[#221854] text-[#221854] text-sm font-bold tracking-widest uppercase hover:bg-[#221854] hover:text-white transition-colors">
+        Load more properties
+      </button>
+    </div>
+  </div>
+
+  <!-- Map View (hidden by default) -->
+  <div id="mapView" class="hidden px-6 lg:px-16 py-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[640px]">
+
+      <!-- Left: card list -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto max-h-[640px] pr-2">
+
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+          <div class="relative overflow-hidden h-40">
+            <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=280&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+            <div class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#5B25C1] border-2 border-white flex items-center justify-center">
+              <span class="text-white text-[9px] font-black">1</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="text-sm font-semibold tracking-tight text-[#141821] mb-0.5">Villa Azure Bliss</h3>
+            <p class="text-xs text-[#756791] mb-1">Mazatlán, Sinaloa</p>
+            <p class="text-sm font-semibold text-[#5B25C1]">$2,100<span class="text-xs font-normal text-[#756791]">/n</span></p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+          <div class="relative overflow-hidden h-40">
+            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=280&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+            <div class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#5B25C1] border-2 border-white flex items-center justify-center">
+              <span class="text-white text-[9px] font-black">2</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="text-sm font-semibold tracking-tight text-[#141821] mb-0.5">Casa del Mar</h3>
+            <p class="text-xs text-[#756791] mb-1">Puerto Vallarta, Jalisco</p>
+            <p class="text-sm font-semibold text-[#5B25C1]">$1,450<span class="text-xs font-normal text-[#756791]">/n</span></p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+          <div class="relative overflow-hidden h-40">
+            <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=400&h=280&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+            <div class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#5B25C1] border-2 border-white flex items-center justify-center">
+              <span class="text-white text-[9px] font-black">3</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="text-sm font-semibold tracking-tight text-[#141821] mb-0.5">Casita Frente al Mar</h3>
+            <p class="text-xs text-[#756791] mb-1">Tulum, Quintana Roo</p>
+            <p class="text-sm font-semibold text-[#5B25C1]">$1,400<span class="text-xs font-normal text-[#756791]">/n</span></p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden group cursor-pointer hover:shadow-xl transition-shadow duration-300">
+          <div class="relative overflow-hidden h-40">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=280&fit=crop" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+            <div class="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#5B25C1] border-2 border-white flex items-center justify-center">
+              <span class="text-white text-[9px] font-black">4</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="text-sm font-semibold tracking-tight text-[#141821] mb-0.5">Villa Cielo Abierto</h3>
+            <p class="text-xs text-[#756791] mb-1">Los Cabos, BCS</p>
+            <p class="text-sm font-semibold text-[#5B25C1]">$2,750<span class="text-xs font-normal text-[#756791]">/n</span></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Map placeholder -->
+      <div class="relative rounded-2xl overflow-hidden bg-[#e8e4f0] min-h-[640px] flex items-center justify-center border border-[#ccc2ed]">
+        <!-- Map image placeholder -->
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=640&fit=crop" alt="Map" class="absolute inset-0 w-full h-full object-cover opacity-30"/>
+        <div class="relative z-10 text-center px-6">
+          <div class="w-16 h-16 rounded-full bg-[#5B25C1] flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          </div>
+          <p class="font-semibold text-[#221854]">Interactive Map View</p>
+          <p class="text-sm text-[#756791] mt-1">Showing 60 properties across Mexico</p>
+        </div>
+        <!-- Simulated pins -->
+        <div class="absolute top-[22%] left-[30%] w-8 h-8 rounded-full bg-[#5B25C1] border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-125 transition-transform z-20">
+          <span class="text-white text-xs font-black">1</span>
+        </div>
+        <div class="absolute top-[38%] left-[55%] w-8 h-8 rounded-full bg-[#5B25C1] border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-125 transition-transform z-20">
+          <span class="text-white text-xs font-black">2</span>
+        </div>
+        <div class="absolute top-[60%] left-[20%] w-8 h-8 rounded-full bg-[#5B25C1] border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-125 transition-transform z-20">
+          <span class="text-white text-xs font-black">3</span>
+        </div>
+        <div class="absolute top-[50%] left-[72%] w-8 h-8 rounded-full bg-[#5B25C1] border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-125 transition-transform z-20">
+          <span class="text-white text-xs font-black">4</span>
+        </div>
+        <div class="absolute top-[28%] left-[65%] w-8 h-8 rounded-full bg-[#40208e] border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-125 transition-transform z-20">
+          <span class="text-white text-xs font-black">5</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showGrid() {
+    document.getElementById('gridView').classList.remove('hidden');
+    document.getElementById('mapView').classList.add('hidden');
+    document.getElementById('btn-grid').classList.add('bg-[#221854]', 'text-white');
+    document.getElementById('btn-grid').classList.remove('text-[#756791]', 'hover:bg-gray-100');
+    document.getElementById('btn-map').classList.remove('bg-[#221854]', 'text-white');
+    document.getElementById('btn-map').classList.add('text-[#756791]', 'hover:bg-gray-100');
+  }
+  function showMap() {
+    document.getElementById('mapView').classList.remove('hidden');
+    document.getElementById('gridView').classList.add('hidden');
+    document.getElementById('btn-map').classList.add('bg-[#221854]', 'text-white');
+    document.getElementById('btn-map').classList.remove('text-[#756791]', 'hover:bg-gray-100');
+    document.getElementById('btn-grid').classList.remove('bg-[#221854]', 'text-white');
+    document.getElementById('btn-grid').classList.add('text-[#756791]', 'hover:bg-gray-100');
+  }
+</script>
+
+</body>
+</html>
