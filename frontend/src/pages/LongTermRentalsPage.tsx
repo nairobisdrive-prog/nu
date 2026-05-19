@@ -13,6 +13,7 @@ interface Property {
   bathrooms: number;
   price: number;
   price_type: string;
+  property_type: string;
   images: string[];
 }
 

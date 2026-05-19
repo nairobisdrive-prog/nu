@@ -59,14 +59,59 @@ const ParkingIcon = () => (
   </svg>
 );
 
+/* ─── Types ─── */
+interface PropertyData {
+  id: number;
+  title: string;
+  address?: string;
+  city: string;
+  state: string;
+  bedrooms: number;
+  bathrooms: number;
+  price: number;
+  price_type: string;
+  property_type?: string;
+  images: string | string[];
+  features?: string | string[];
+  sqft?: number;
+  parking?: number;
+  year_built?: string;
+  listed_date?: string;
+  status?: string;
+  views?: number;
+  last_updated?: string;
+  agent_id?: number;
+  description?: string;
+}
+
+interface AgentData {
+  id: number;
+  name: string;
+  photo_url?: string;
+  specialty?: string;
+}
+
+interface SimilarProperty {
+  id: number;
+  title: string;
+  city: string;
+  state: string;
+  bedrooms: number;
+  bathrooms: number;
+  price: number;
+  price_type: string;
+  property_type: string;
+  images: string[];
+}
+
 export default function PropertyDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { firebaseUser } = useAuth();
 
-  const [property, setProperty] = useState<Record<string, unknown> | null>(null);
-  const [agent, setAgent] = useState<Record<string, unknown> | null>(null);
-  const [similar, setSimilar] = useState<Record<string, unknown>[]>([]);
+  const [property, setProperty] = useState<PropertyData | null>(null);
+  const [agent, setAgent] = useState<AgentData | null>(null);
+  const [similar, setSimilar] = useState<SimilarProperty[]>([]);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
 
