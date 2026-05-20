@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const [agentRows]: any = await pool.execute(
       `SELECT a.*, u.display_name, u.email, u.phone, u.avatar_url
        FROM agents a JOIN users u ON a.user_id = u.id WHERE a.id = ?`, [id]

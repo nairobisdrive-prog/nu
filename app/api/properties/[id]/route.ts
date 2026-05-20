@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const [rows]: any = await pool.execute('SELECT * FROM properties WHERE id = ?', [id]);
     if (!rows?.length) return NextResponse.json({ error: 'Property not found' }, { status: 404 });
 
@@ -23,9 +23,9 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const updates = await req.json();
     const allowedFields = ['title','address','city','state','price','price_type','bedrooms','bathrooms',
       'sqft','property_type','images','description','features','year_built','parking','agent_id',
@@ -50,9 +50,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await pool.execute('DELETE FROM properties WHERE id = ?', [params.id]);
+    const { id } = await params;
+    await pool.execute('DELETE FROM properties WHERE id = ?', [id]);
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to delete property' }, { status: 500 });

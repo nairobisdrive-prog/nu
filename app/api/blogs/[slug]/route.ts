@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
-export async function GET(_req: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     const [rows]: any = await pool.execute(
-      'SELECT * FROM blogs WHERE slug = ? AND status = ?', [params.slug, 'published']
+      'SELECT * FROM blogs WHERE slug = ? AND status = ?', [slug, 'published']
     );
     if (!rows?.length) return NextResponse.json({ error: 'Blog post not found' }, { status: 404 });
     return NextResponse.json({ post: rows[0] });
@@ -13,8 +14,9 @@ export async function GET(_req: NextRequest, { params }: { params: { slug: strin
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     const updates = await req.json();
     const allowedFields = ['title','slug','excerpt','content','featured_image','status','tags','meta_title','meta_description'];
     const setClauses: string[] = [];
@@ -29,7 +31,7 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
     if (updates.status === 'published') { setClauses.push('published_at = ?'); values.push(new Date().toISOString()); }
     if (!setClauses.length) return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
 
-    values.push(params.slug);
+    values.push(slug);
     await pool.execute(`UPDATE blogs SET ${setClauses.join(', ')} WHERE slug = ?`, values);
     return NextResponse.json({ success: true });
   } catch (err) {
@@ -37,9 +39,10 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
-    await pool.execute('DELETE FROM blogs WHERE slug = ?', [params.slug]);
+    const { slug } = await params;
+    await pool.execute('DELETE FROM blogs WHERE slug = ?', [slug]);
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to delete blog post' }, { status: 500 });

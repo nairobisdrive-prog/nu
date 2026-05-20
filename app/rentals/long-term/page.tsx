@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import LongTermCard from '@/components/LongTermCard';
@@ -22,7 +22,7 @@ const SIMULATED_PINS = [
   { top: '28%', left: '65%', num: 5, color: '#40208e' },
 ];
 
-export default function LongTermRentalsPage() {
+function LongTermRentalsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -201,5 +201,13 @@ export default function LongTermRentalsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function LongTermRentalsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-10 h-10 rounded-full border-4 border-[#5B25C1] border-t-transparent" /></div>}>
+      <LongTermRentalsContent />
+    </Suspense>
   );
 }
