@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://xaan.mx', 'https://www.xaan.mx']
+    ? ['https://xaan.mx', 'https://www.xaan.mx', 'https://hotpink-seahorse-379278.hostingersite.com']
     : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
   credentials: true,
 }));
