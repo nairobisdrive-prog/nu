@@ -1,7 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import pool from './config/database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Route imports
 import authRoutes from './routes/auth.js';
@@ -45,7 +50,16 @@ app.use('/api/users', userRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/admin', adminRoutes);
 
-// 404 handler
+// Serve frontend static files
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendDist));
+
+// SPA catch-all — return index.html for any non-API route
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(frontendDist, 'index.html'));
+});
+
+// 404 handler (API routes only — unreachable for SPA but kept as safety net)
 app.use((_req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
