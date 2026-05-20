@@ -18,7 +18,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       [id, ref.city, ref.price_type, ref.price, limit]
     );
 
-    return NextResponse.json({ properties: rows });
+    const properties = (rows as any[]).map(p => ({
+      ...p,
+      images:   typeof p.images   === 'string' ? JSON.parse(p.images)   : (p.images   || []),
+      features: typeof p.features === 'string' ? JSON.parse(p.features) : (p.features || []),
+    }));
+
+    return NextResponse.json({ properties });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to fetch similar properties' }, { status: 500 });
   }

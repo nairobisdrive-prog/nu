@@ -17,6 +17,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       if (agentRows?.length) property.agent = agentRows[0];
     }
 
+    property.images   = typeof property.images   === 'string' ? JSON.parse(property.images)   : (property.images   || []);
+    property.features = typeof property.features === 'string' ? JSON.parse(property.features) : (property.features || []);
+
     return NextResponse.json({ property });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to fetch property' }, { status: 500 });

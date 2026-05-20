@@ -56,7 +56,13 @@ export async function GET(req: NextRequest) {
     const [countResult]: any = await pool.execute(countSql, cp);
     const total = countResult[0]?.total || 0;
 
-    return NextResponse.json({ properties: rows, pagination: { total, limit, offset, hasMore: total > offset + limit } });
+    const properties = (rows as any[]).map(p => ({
+      ...p,
+      images:   typeof p.images   === 'string' ? JSON.parse(p.images)   : (p.images   || []),
+      features: typeof p.features === 'string' ? JSON.parse(p.features) : (p.features || []),
+    }));
+
+    return NextResponse.json({ properties, pagination: { total, limit, offset, hasMore: total > offset + limit } });
   } catch (err) {
     console.error('Properties list error:', err);
     return NextResponse.json({ error: 'Failed to fetch properties' }, { status: 500 });
