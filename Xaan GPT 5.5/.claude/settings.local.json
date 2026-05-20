@@ -10,7 +10,15 @@
       "mcp__Desktop_Commander__list_directory",
       "mcp__Desktop_Commander__read_file",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\frazi\\\\Desktop\\\\xaan\\\\Xaan Skeleton\" -Force)",
-      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\frazi\\\\Desktop\\\\xaan\" -Recurse -Depth 2 | Select-Object FullName | Where-Object { $_.FullName -notmatch \"node_modules\" })"
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\frazi\\\\Desktop\\\\xaan\" -Recurse -Depth 2 | Select-Object FullName | Where-Object { $_.FullName -notmatch \"node_modules\" })",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(git rm *)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\frazi\\\\Desktop\\\\xaan\\\\frontend\\\\src\")",
+      "Bash(findstr /v node_modules)",
+      "Bash(npm run *)"
     ]
   }
 }

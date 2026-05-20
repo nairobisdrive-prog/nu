@@ -1,0 +1,120 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Calendar, Share2, Twitter, Facebook, Linkedin } from 'lucide-react';
+import { blogsApi } from '@/lib/api';
+
+export default function BlogPostPage() {
+  const params = useParams();
+  const slug = params?.slug as string;
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    async function fetchPost() {
+      try {
+        const data = await blogsApi.get(slug);
+        setPost(data.post);
+      } catch (err) {
+        console.error('Failed to fetch post:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPost();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F5F3EF] pt-16">
+        <div className="max-w-3xl mx-auto px-4 animate-pulse pt-12">
+          <div className="aspect-[16/9] bg-[#E8E5DF] rounded-2xl" />
+          <div className="mt-8 h-8 bg-[#E8E5DF] rounded w-3/4" />
+          <div className="mt-4 h-4 bg-[#E8E5DF] rounded w-1/2" />
+          <div className="mt-6 space-y-3">
+            <div className="h-4 bg-[#E8E5DF] rounded" />
+            <div className="h-4 bg-[#E8E5DF] rounded" />
+            <div className="h-4 bg-[#E8E5DF] rounded w-5/6" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-[#F5F3EF] pt-16">
+        <div className="max-w-3xl mx-auto px-4 text-center py-20">
+          <p className="text-[#756791] text-lg">Blog post not found.</p>
+          <Link href="/blog" className="mt-4 inline-block text-[#5B25C1] font-medium hover:underline">Back to blog</Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F5F3EF] pt-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20">
+        <Link href="/blog" className="inline-flex items-center gap-2 text-[#756791] hover:text-[#141821] transition-colors mb-8">
+          <ArrowLeft className="w-4 h-4" />Back to blog
+        </Link>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-[#E8E5DF]">
+          <img
+            src={post.featured_image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=675&fit=crop'}
+            alt={post.title}
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-8">
+          <div className="flex items-center gap-4 text-sm text-[#756791] mb-4">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              {new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </div>
+            {post.tags && (
+              <div className="flex gap-2">
+                {(typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags).map((tag: string) => (
+                  <span key={tag} className="px-2.5 py-0.5 rounded-full bg-[#5B25C1]/10 text-[#5B25C1] text-xs font-medium">{tag}</span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#141821] mb-6">{post.title}</h1>
+          <p className="text-lg text-[#756791] leading-relaxed mb-8">{post.excerpt}</p>
+
+          <div
+            className="prose prose-lg max-w-none prose-headings:text-[#141821] prose-p:text-[#756791] prose-a:text-[#5B25C1] prose-strong:text-[#141821]"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+
+          <div className="mt-12 pt-8 border-t border-[#E8E5DF]">
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-[#141821]">Share this article:</span>
+              <div className="flex gap-2">
+                <button className="w-10 h-10 rounded-full bg-[#E8E5DF] hover:bg-[#1DA1F2] hover:text-white flex items-center justify-center transition-colors">
+                  <Twitter className="w-4 h-4" />
+                </button>
+                <button className="w-10 h-10 rounded-full bg-[#E8E5DF] hover:bg-[#4267B2] hover:text-white flex items-center justify-center transition-colors">
+                  <Facebook className="w-4 h-4" />
+                </button>
+                <button className="w-10 h-10 rounded-full bg-[#E8E5DF] hover:bg-[#0077b5] hover:text-white flex items-center justify-center transition-colors">
+                  <Linkedin className="w-4 h-4" />
+                </button>
+                <button className="w-10 h-10 rounded-full bg-[#E8E5DF] hover:bg-[#221854] hover:text-white flex items-center justify-center transition-colors">
+                  <Share2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
